@@ -1,7 +1,0 @@
-salesdata = LOAD 'SalesNumber/SalesJan2009.csv' USING PigStorage(',') 
-AS (Transaction_date,Product,Price:int,Payment_Type,Name:Chararray,City:Chararray,State,Country:Chararray,Account_Created,Last_Login,Latitude,Longitude);
-country_group = GROUP salesdata BY Country;
-totalsum = FOREACH country_group GENERATE SUM(salesdata.Price) AS total_sum, group;
-sumorder = ORDER totalsum BY total_sum DESC;
-top_ten = LIMIT sumorder 10;
-STORE top_ten INTO 'ToptenSales' USING PigStorage(',');
