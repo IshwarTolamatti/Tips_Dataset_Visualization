@@ -1,0 +1,28 @@
+CREATE TABLE ishwarsales (Transaction_date date,Product string,Price int,Payment_Type string,Name string,City string,State string,Country string,Account_Created date,Last_Login date,Latitude float,Longitude float)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ',';
+
+DESCRIBE FORMATTED ishwarsales;
+
+LOAD DATA LOCAL INPATH '/mnt/home/edureka_547958/SalesNumber/SalesJan2009.csv' INTO TABLE ishwarsales;
+
+SELECT City, SUM(Price) AS Total
+FROM ishwarsales
+GROUP BY City
+ORDER BY Total DESC
+LIMIT 10;
+
+SELECT Payment_Type, COUNT(Payment_Type) AS CardCount
+FROM ishwarsales
+GROUP BY Payment_Type
+ORDER BY CardCount DESC;
+
+SELECT Country, COUNT(Country) AS CountryCount
+FROM ishwarsales
+GROUP BY Country
+ORDER BY CountryCount DESC;
+
+SELECT *
+FROM ishwarsales
+WHERE Country = 'India';
+

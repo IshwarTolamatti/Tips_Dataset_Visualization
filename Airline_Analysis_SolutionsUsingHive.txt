@@ -1,0 +1,66 @@
+Airport_ID int,Name string,City string,Country string,IATA string,ICAO string,Latitude float,Longitude float,Altitude int,Timezone float,DST string,Tz_database_time_Timezone string
+Airline_ID int,Name	string,Alias string,IATA string,ICAO string,Callsign string,Country string,Active string
+Airline_Code string,Airline_ID int,Source_airport string,Source_airport_ID int,Destination_airport string,Destination_airport_ID int,Codeshare string,Stops int,Equipment string
+
+
+create database ishairline;
+use ishairline;
+
+1.
+CREATE TABLE airports_mod(Airport_ID int,Name string,City string,Country string,IATA string,ICAO string,Latitude float,Longitude float,Altitude int,Timezone float,DST string,Tz_database_time_Timezone string)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ',';
+
+DESCRIBE FORMATTED airports_mod;
+
+LOAD DATA INPATH 'ishwar/finalprojects/FinalProjects/Airlines_Analysis/Air-datasets/airports_mod.dat' INTO TABLE airports_mod;
+
+2.
+CREATE TABLE Final_airlines(Airline_ID int,Name string,Second_Name string,IATA string,ICAO string,Callsign string,Country string,Active string)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ',';
+
+DESCRIBE FORMATTED Final_airlines;
+
+LOAD DATA INPATH 'ishwar/finalprojects/FinalProjects/Airlines_Analysis/Air-datasets/Final_airlines' INTO TABLE Final_airlines;
+
+
+3.
+CREATE TABLE routes(Airline_Code string,Airline_ID int,Source_airport string,Source_airport_ID int,Destination_airport string,Destination_airport_ID int,Codeshare string,Stops int,Equipment string)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ',';
+
+DESCRIBE FORMATTED routes;
+Location:               hdfs://nameservice1/user/hive/warehouse/ishairline.db 
+
+
+LOAD DATA INPATH 'ishwar/finalprojects/FinalProjects/Airlines_Analysis/Air-datasets/routes.dat' INTO TABLE routes;
+
+
+A. Find list of Airports operating in the Country India
+
+SELECT * FROM airports_mod
+WHERE Country = 'India';
+
+B. Find the list of Airlines having zero stops
+
+SELECT * FROM routes
+WHERE stops = 0;
+
+C. List of Airlines operating with code share
+
+SELECT * FROM routes
+WHERE Codeshare = 'Y';
+
+D. Which country (or) territory having highest Airports
+
+SELECT Country, COUNT(Country) AS AirportCount FROM airports_mod
+GROUP BY Country
+ORDER BY AirportCount DESC
+LIMIT 1;
+
+E. Find the list of Active Airlines in United state
+
+SELECT * FROM Final_airlines
+WHERE Country = 'United States' AND Active = 'Y';
+

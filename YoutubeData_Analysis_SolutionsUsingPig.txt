@@ -1,0 +1,28 @@
+Video_id int,uploader chararray,Interval int,Category chararray,Length int,Number_of_views int,Rating float,Number_of_ratings int,Number_of_comments int,Related_video_ids chararray
+
+ishytdata = LOAD 'ishwar/finalprojects/FinalProjects/Youtube_Data_Analysis/youtubedata.txt.txt' USING PigStorage('\t') 
+AS (Video_id:int,uploader:chararray,Interval:int,Category:chararray,Length:int,Number_of_views:int,Rating:float,Number_of_ratings:int,Number_of_comments:int,Related_video_ids:chararray);
+
+A. Find out the top 5 categories with maximum number of videos uploaded.
+
+ishytdatagrouped = GROUP ishytdata BY Category;
+ishytdatagroupedtotal = FOREACH ishytdatagrouped GENERATE COUNT(ishytdata.Category) AS total_count, group;
+ishytdataorder = ORDER ishytdatagroupedtotal BY total_count DESC;
+top_five = LIMIT ishytdataorder 5;
+DUMP top_five;
+
+B. Find out the top 10 rated videos.
+
+ishytdataorderbyratingsnumber = ORDER ishytdata BY Number_of_ratings DESC;
+top_ten = LIMIT ishytdataorderbyratingsnumber 10;
+DUMP top_ten;
+
+ishytdataorderbyrating = ORDER ishytdata BY Rating DESC;
+top_ten = LIMIT ishytdataorderbyrating 10;
+DUMP top_ten;
+
+C. Find out the most viewed videos.
+
+ishytdataorderbyviewa = ORDER ishytdata BY Number_of_views DESC;
+top_ten = LIMIT ishytdataorderbyviewa 10;
+DUMP top_ten;
